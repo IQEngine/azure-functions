@@ -117,6 +117,7 @@ async def pythonsnippet(info : fastapi.Request):
     logging.info("pre-snippet")
     x = eval(pythonSnippet)
     logging.info("post-snippet")
+    # TODO: add some checking here to make sure x is still a complex array and the length we expect
     
     # Convert back to real, and the same type as specified in dataType
     if dataType == 'cf32_le':
