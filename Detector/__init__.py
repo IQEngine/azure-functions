@@ -91,6 +91,7 @@ async def pythonsnippet(info : fastapi.Request):
     function_input = await info.json()
     logging.info(function_input)
     pythonSnippet = function_input["pythonSnippet"]
+    logging.info(pythonSnippet)
     dataType = function_input["dataType"]
     offset = function_input["offset"]
     count = function_input["count"]
@@ -108,7 +109,21 @@ async def pythonsnippet(info : fastapi.Request):
     else:
         print("Datatype not implemented")
         return
-    # for now dont convert to complex
-    logging.info(samples[0:10])
-    logging.info("returning response")
+
+
+    x = samples[::2] + 1j*samples[1::2] # convert to complex
+
+    # Run the specified python snippet
+    logging.info("pre-snippet")
+    x = eval(pythonSnippet)
+    logging.info("post-snippet")
+    
+    # Convert back to real, and the same type as specified in dataType
+    if dataType == 'cf32_le':
+        samples = np.zeros(len(x)*2, dtype=np.float32)
+    elif dataType == 'ci16_le':
+        samples = np.zeros(len(x)*2, dtype=np.int16)
+    samples[::2] = x.real
+    samples[1::2] = x.imag
+    
     return fastapi.Response(samples.tobytes(), media_type='application/octet-stream')
