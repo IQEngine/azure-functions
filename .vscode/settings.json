@@ -12,7 +12,7 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
     "prettier.printWidth": 120,
-    "azureFunctions.deploySubpath": "azure-functions",
+    "azureFunctions.deploySubpath": "/",
     "azureFunctions.scmDoBuildDuringDeployment": true,
     "azureFunctions.projectLanguage": "Python",
     "azureFunctions.projectRuntime": "~4",
