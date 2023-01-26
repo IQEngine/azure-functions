@@ -1,0 +1,40 @@
+POST https://iqengine-azure-functions2.azurewebsites.net/pythonsnippet HTTP/1.1
+content-type: application/json
+
+{
+    "pythonSnippet": "",
+    "dataType": "ci16_le",
+    "offset": 0,
+    "count": 1000000,
+    "blobName": "cellular_downlink_880MHz.sigmf-data"
+}
+
+####
+
+
+fetch('https://iqengine-azure-functions2.azurewebsites.net/pythonsnippet', {
+    method: 'POST',
+    headers: {
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+    pythonSnippet: "",
+    dataType: "ci16_le",
+    offset: 0,
+    count: 1000000,
+    blobName: "cellular_downlink_880MHz.sigmf-data"
+    }),
+})
+.then(function(response) {
+return response.body;
+})
+.then(function(body) {
+return body.getReader();
+}).then(function(reader) {
+return reader.read();
+}).then(function(read) {
+console.log(new Int16Array(read.value.buffer));
+});
+
+
